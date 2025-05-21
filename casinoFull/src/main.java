@@ -10,7 +10,7 @@ public class main {
         System.out.println("1. Ride the Bus");
         int toPlay = scanner.nextInt();
         if (toPlay == 1){
-            rideTheBus(winnings);
+            winnings = rideTheBus(winnings);
         }
     }
 }

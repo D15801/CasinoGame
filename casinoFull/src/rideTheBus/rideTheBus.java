@@ -63,6 +63,7 @@ public class rideTheBus {
                                 if(game.suitCheck(answer, cards[3])) {
                                     System.out.println("Correct");
                                     System.out.println("Winnings are now 4 times the bet");
+                                    return (totalCash*4);
                                 }
                                 else{
                                     return totalCash;
