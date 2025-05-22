@@ -1,8 +1,10 @@
 import java.util.Scanner;
+import rideTheBus.rideTheBus;
 
 public class main {
     public static void main(String [] args){
         System.out.println("Welcome to the casino");
+        rideTheBus rTB = new rideTheBus();
         double winnings = 1000.00;
         System.out.println();
         Scanner scanner = new Scanner(System.in);
@@ -10,7 +12,7 @@ public class main {
         System.out.println("1. Ride the Bus");
         int toPlay = scanner.nextInt();
         if (toPlay == 1){
-            winnings = rideTheBus(winnings);
+            winnings = rTB.rideTheBusMain(winnings);
         }
     }
 }

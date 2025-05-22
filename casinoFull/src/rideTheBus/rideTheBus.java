@@ -24,6 +24,7 @@ public class rideTheBus {
         int secondCardValue = Shuffle.cardValueRTB(cards[1]);
         int thirdCardValue = Shuffle.cardValueRTB(cards[2]);
         System.out.print("Which colour? ");
+        scanner.nextLine();
         String answer = scanner.nextLine();
         answer = answer.toLowerCase();
         System.out.println(cards[0]);
