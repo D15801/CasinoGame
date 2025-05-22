@@ -58,5 +58,53 @@ public class shuffle {
 
         return 0;
     }
+    public int cardValueblackjack(String card, int total){
+        if(card.startsWith("2")){
+            return 2;
+        }
+        if(card.startsWith("3")){
+            return 3;
+        }
+        if(card.startsWith("4")){
+            return 4;
+        }
+        if(card.startsWith("5")){
+            return 5;
+        }
+        if(card.startsWith("6")){
+            return 6;
+        }
+        if(card.startsWith("7")){
+            return 7;
+        }
+        if(card.startsWith("8")){
+            return 8;
+        }
+        if(card.startsWith("9")){
+            return 9;
+        }
+        if(card.startsWith("10")){
+            return 10;
+        }
+        if(card.startsWith("J")){
+            return 10;
+        }
+        if(card.startsWith("Q")){
+            return 10;
+        }
+        if(card.startsWith("K")){
+            return 10;
+        }
+        if(card.startsWith("A")){
+            if((total + 11) < 21) {
+                return 11;
+            }
+            else{
+                return 1;
+            }
+        }
+
+        return 0;
+    }
 
 }
