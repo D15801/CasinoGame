@@ -1,5 +1,4 @@
 package rideTheBus;
-import rtbModes.rtbModes;
 import shuffle.shuffle;
 import java.util.Scanner;
 public class rideTheBus {
@@ -19,7 +18,6 @@ public class rideTheBus {
         totalCash = totalCash - wager;
         shuffle Shuffle = new shuffle();
         String[] cards = Shuffle.shuffle();
-        rtbModes game = new rtbModes();
         int firstCardValue = Shuffle.cardValueRTB(cards[0]);
         int secondCardValue = Shuffle.cardValueRTB(cards[1]);
         int thirdCardValue = Shuffle.cardValueRTB(cards[2]);
@@ -28,7 +26,7 @@ public class rideTheBus {
         String answer = scanner.nextLine();
         answer = answer.toLowerCase();
         System.out.println(cards[0]);
-        if (game.colourCheck(answer,cards[0])) {
+        if (colourCheck(answer,cards[0])) {
             System.out.println("Correct");
             System.out.println("Winning are now 1 times the bet");
             System.out.print("Would you like to continue? ");
@@ -39,7 +37,7 @@ public class rideTheBus {
                 answer = scanner.nextLine();
                 answer = answer.toLowerCase();
                 System.out.println(cards[1]);
-                if (game.higherLowerCheck(answer, firstCardValue, secondCardValue)) {
+                if (higherLowerCheck(answer, firstCardValue, secondCardValue)) {
                     System.out.println("Correct!");
                     System.out.println("Winning are now 2 times the bet");
                     System.out.print("Would you like to continue? ");
@@ -50,7 +48,7 @@ public class rideTheBus {
                         answer = scanner.nextLine();
                         answer = answer.toLowerCase();
                         System.out.println(cards[2]);
-                        if (game.inoutCheck(answer, firstCardValue, secondCardValue, thirdCardValue)) {
+                        if (inoutCheck(answer, firstCardValue, secondCardValue, thirdCardValue)) {
                             System.out.println("Correct!");
                             System.out.println("Winnings are now 3 times the bet");
                             System.out.print("Would you like to continue? ");
@@ -61,12 +59,14 @@ public class rideTheBus {
                                 answer = scanner.nextLine();
                                 answer = answer.toLowerCase();
                                 System.out.println(cards[3]);
-                                if(game.suitCheck(answer, cards[3])) {
+                                if(suitCheck(answer, cards[3])) {
                                     System.out.println("Correct");
                                     System.out.println("Winnings are now 4 times the bet");
-                                    return (totalCash*4);
+                                    wager = wager * 4;
+                                    return totalCash + wager;
                                 }
                                 else{
+                                    System.out.println("Sorry, you guessed wrong");
                                     return totalCash;
                                 }
                             }
@@ -79,6 +79,7 @@ public class rideTheBus {
 
                         }
                         else {
+                            System.out.println("Sorry, you guessed wrong");
                             return totalCash;
                         }
 
@@ -89,6 +90,7 @@ public class rideTheBus {
                     }
                 }
                 else{
+                    System.out.println("Sorry, you guessed wrong");
                     return totalCash;
                 }
             }
@@ -98,8 +100,69 @@ public class rideTheBus {
                 return totalCash;
             }
         }
-
+        System.out.println("Sorry, you guessed wrong");
         return totalCash;
+    }
+    public boolean colourCheck(String choice, String card) {
+        if (choice.equals("red")) {
+            return (card.contains("Hearts")) || (card.contains("Diamonds"));
+        } else if (choice.equals("black")) {
+            return (card.contains("Clubs")) || (card.contains("Spades"));
+        }
+        return false;
+    }
+
+    public boolean higherLowerCheck(String choice, int oldCard, int newCard) {
+        if (choice.equals("higher")) {
+            return newCard > oldCard;
+        }
+        if (choice.equals("lower")) {
+            return newCard < oldCard;
+
+        }
+        return false;
+    }
+    public boolean inoutCheck(String choice, int oldestCard,int oldCard, int newCard){
+        if (choice.equals("in")){
+            if(oldestCard<oldCard){
+                if((oldestCard<newCard)&&(newCard<oldCard)){
+                    return true;
+                }
+            }
+            else if(oldestCard>oldCard){
+                if((oldestCard>newCard)&&(newCard>oldCard)){
+                    return true;
+                }
+            }
+            else{
+                return false;
+            }
+        }
+        if (choice.equals("out")){
+            if(oldestCard<oldCard){
+                return (oldestCard > newCard) || (newCard > oldCard);
+            }
+            else if(oldestCard>oldCard){
+                return (oldestCard < newCard) || (newCard < oldCard);
+            }
+            else{
+                return false;
+            }
+        }
+        return false;
+    }
+    public boolean suitCheck(String choice, String newCard){
+        if ((choice.equals("hearts"))&&(newCard.contains("Hearts"))){
+            return true;
+        } else if ((choice.equals("diamonds"))&&(newCard.contains("Diamonds"))){
+            return true;
+        } else if ((choice.equals("clubs"))&&(newCard.contains("Clubs"))){
+            return true;
+        } else if ((choice.equals("spades"))&&(newCard.contains("Spades"))){
+            return true;
+        }else {
+            return false;
+        }
     }
 
 

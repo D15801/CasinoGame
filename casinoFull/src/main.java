@@ -10,9 +10,14 @@ public class main {
         Scanner scanner = new Scanner(System.in);
         System.out.println("What game would you like to play?");
         System.out.println("1. Ride the Bus");
+        System.out.println("2: Blackjack");
         int toPlay = scanner.nextInt();
         if (toPlay == 1){
             winnings = rTB.rideTheBusMain(winnings);
         }
+        if (toPlay == 2){
+            System.out.println("Suck My Dick");
+        }
+        System.out.println("Your winnings are: $" + winnings);
     }
 }
