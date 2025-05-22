@@ -58,7 +58,7 @@ public class shuffle {
 
         return 0;
     }
-    public int cardValueblackjack(String card, int total){
+    public int cardValueblackjack(String card){
         if(card.startsWith("2")){
             return 2;
         }
@@ -96,15 +96,13 @@ public class shuffle {
             return 10;
         }
         if(card.startsWith("A")){
-            if((total + 11) < 21) {
-                return 11;
-            }
-            else{
-                return 1;
-            }
+            return 11;
         }
 
         return 0;
     }
+    public int aceChecker(){
 
+        return 11;
+    }
 }
