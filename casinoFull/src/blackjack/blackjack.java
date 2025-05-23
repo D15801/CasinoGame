@@ -49,6 +49,7 @@ public class blackjack {
         playerTotal = Shuffle.cardValueblackjack(cards[2]) + playerTotal;
         int dealerTotal = Shuffle.cardValueblackjack(cards[1]);
         dealerTotal = Shuffle.cardValueblackjack(cards[3]) + dealerTotal;
+        playerTotal = 0;
         if(playerTotal > 21){  //Dealt two Ace handling
             playerTotal = 12;
             aceCheckPlayer -= 1;
@@ -59,6 +60,11 @@ public class blackjack {
         }
         System.out.println("Your total is "+ playerTotal);
         if(playerTotal == 21){
+            if(playerTotal == dealerTotal){
+                System.out.println("Double blackjack");
+                System.out.println("Tie!");
+                return totalCash + wager;
+            }
             System.out.println("Blackjack!");
             return totalCash + (wager*2);
         }
@@ -126,6 +132,10 @@ public class blackjack {
         if (playerTotal > dealerTotal){
             System.out.println("This is less than your total, congratulations");
             return totalCash + (wager*2);
+        }
+        if (playerTotal == dealerTotal){
+            System.out.println("Tie game");
+            return totalCash + wager;
         }
         System.out.println("This is more than your total, the dealer wins");
         return totalCash;
