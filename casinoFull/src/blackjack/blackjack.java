@@ -33,23 +33,22 @@ public class blackjack {
         System.out.println("Dealer has been dealt the "+ cards[1]);
         System.out.println("You have been dealt the "+ cards[2]);
         System.out.println("Dealer has been dealt a card face down");
-        if (Shuffle.cardValueblackjack(cards[0]) == 11){
+        if (Shuffle.cardValue(cards[0]) == 11){
             aceCheckPlayer += 1;
         }
-        if (Shuffle.cardValueblackjack(cards[2]) == 11){
+        if (Shuffle.cardValue(cards[2]) == 11){
             aceCheckPlayer += 1;
         }
-        if (Shuffle.cardValueblackjack(cards[1]) == 11){
+        if (Shuffle.cardValue(cards[1]) == 11){
             aceCheckDealer += 1;
         }
-        if (Shuffle.cardValueblackjack(cards[3]) == 11){
+        if (Shuffle.cardValue(cards[3]) == 11){
             aceCheckDealer += 1;
         }
-        int playerTotal = Shuffle.cardValueblackjack(cards[0]);
-        playerTotal = Shuffle.cardValueblackjack(cards[2]) + playerTotal;
-        int dealerTotal = Shuffle.cardValueblackjack(cards[1]);
-        dealerTotal = Shuffle.cardValueblackjack(cards[3]) + dealerTotal;
-        playerTotal = 0;
+        int playerTotal = Shuffle.cardValue(cards[0]);
+        playerTotal = Shuffle.cardValue(cards[2]) + playerTotal;
+        int dealerTotal = Shuffle.cardValue(cards[1]);
+        dealerTotal = Shuffle.cardValue(cards[3]) + dealerTotal;
         if(playerTotal > 21){  //Dealt two Ace handling
             playerTotal = 12;
             aceCheckPlayer -= 1;
@@ -79,10 +78,10 @@ public class blackjack {
         while (answer.equals("hit")){  //Player Hit Loop
             newCard = cards[cardsDealt];
             System.out.println("You received a " + newCard);
-            if (Shuffle.cardValueblackjack(newCard) == 11){
+            if (Shuffle.cardValue(newCard) == 11){
                 aceCheckPlayer +=1;
             }
-            playerTotal = Shuffle.cardValueblackjack(newCard) + playerTotal;
+            playerTotal = Shuffle.cardValue(newCard) + playerTotal;
             if (playerTotal > 21 && aceCheckPlayer > 0){  // If ace takes player over 21, make it 1 not 11
                 playerTotal -= 10;
                 aceCheckPlayer -= 1;
@@ -107,9 +106,9 @@ public class blackjack {
         System.out.println("The dealers hidden card was "+ cards[3] + ", bringing the dealer's total to " + dealerTotal);
         while (dealerTotal < 17){
             newCard = cards[cardsDealt];
-            dealerTotal = Shuffle.cardValueblackjack(newCard) + dealerTotal;
+            dealerTotal = Shuffle.cardValue(newCard) + dealerTotal;
             System.out.println("Dealer received a " + newCard + ", bringing the dealer's total to "+ dealerTotal);
-            if (Shuffle.cardValueblackjack(newCard) == 11){
+            if (Shuffle.cardValue(newCard) == 11){
                 aceCheckDealer +=1;
                 }
             cardsDealt += 1;

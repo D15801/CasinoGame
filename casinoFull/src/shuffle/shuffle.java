@@ -58,7 +58,7 @@ public class shuffle {
 
         return 0;
     }
-    public int cardValueblackjack(String card){
+    public int cardValue(String card){
         if(card.startsWith("2")){
             return 2;
         }
