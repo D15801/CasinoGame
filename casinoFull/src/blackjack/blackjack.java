@@ -45,8 +45,20 @@ public class blackjack {
         if (Shuffle.cardValue(cards[3]) == 11){
             aceCheckDealer += 1;
         }
-        int playerTotal = Shuffle.cardValue(cards[0]);
-        playerTotal = Shuffle.cardValue(cards[2]) + playerTotal;
+        int playerCard1 = Shuffle.cardValue(cards[0]);
+        int playerCard2 = Shuffle.cardValue(cards[2]);
+        if (playerCard1 == playerCard2){
+            System.out.println("Would you like to split? ");
+            String split = scanner.nextLine();
+            split = split.toLowerCase();
+            if (split.contains("yes") || split.contains("y")){
+                blackjackHand playerHand1 = new blackjackHand();
+                playerHand1.newHandSplit(playerCard1);
+                blackjackHand playerHand2 = new blackjackHand();
+                playerHand2.newHandSplit(playerCard2);
+
+            }
+        }
         int dealerTotal = Shuffle.cardValue(cards[1]);
         dealerTotal = Shuffle.cardValue(cards[3]) + dealerTotal;
         if(playerTotal > 21){  //Dealt two Ace handling
@@ -139,4 +151,16 @@ public class blackjack {
         System.out.println("This is more than your total, the dealer wins");
         return totalCash;
     }
+    public void blackjackHand(int card1, int card2){
+        int value;
+        if (card2 == 0){
+            value = card1;
+        }
+        else{
+            value = card1+card2;
+        }
+
+    }
+
+
 }
