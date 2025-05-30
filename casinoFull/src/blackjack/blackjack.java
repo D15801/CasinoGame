@@ -25,6 +25,7 @@ public class blackjack {
         scanner.nextLine();
         shuffle Shuffle = new shuffle();
         String[] cards = Shuffle.shuffle();
+        String answer;
         int cardsDealt = 4;
         blackjackHand playerHand1 = new blackjackHand();
         blackjackHand playerHand2 = new blackjackHand();
@@ -41,19 +42,30 @@ public class blackjack {
         int playerCard1 = Shuffle.cardValue(cards[0]);
         int playerCard2 = Shuffle.cardValue(cards[2]);
         if (playerCard1 == playerCard2){
-            System.out.println("Would you like to split? ");
+            System.out.println("Would you like to split?");
             System.out.println("Splitting requires doubling the bet");
             String split = scanner.nextLine();
             split = split.toLowerCase();
             if (split.contains("yes") || split.contains("y")){
-                playerHand1.newHandSplit(playerCard1);
-                playerHand1.exists = true;
-                playerHand2.newHandSplit(playerCard2);
-                playerHand2.exists = true;
-                if(playerCard1 == 11){
-                    playerHand1.aceCheck += 1;
-                    playerHand2.aceCheck += 2;
+                if (totalCash - splitWager > 0){
+                    playerHand1.newHandSplit(playerCard1);
+                    playerHand1.exists = true;
+                    playerHand2.newHandSplit(playerCard2);
+                    playerHand2.exists = true;
+                    if(playerCard1 == 11){
+                        playerHand1.aceCheck += 1;
+                        playerHand2.aceCheck += 2;
+                    }
                 }
+                else{
+                    System.out.println("You do not have the money for that");
+                    playerHand.newHand(playerCard1, playerCard2);
+                    playerHand.exists = true;
+                    if(playerCard1 == 11){
+                        playerHand.aceCheck +=2;
+                    }
+                }
+
 
             }
             else{
@@ -103,7 +115,7 @@ public class blackjack {
 
         if (playerHand.exists) {
             System.out.println("Would you like to hit or stand? ");
-            String answer = scanner.nextLine();
+            answer = scanner.nextLine();
             answer = answer.toLowerCase();
             while (answer.equals("hit")) {  //Player Hit Loop
                 newCard = cards[cardsDealt];
@@ -138,54 +150,140 @@ public class blackjack {
             System.out.println("You are now playing with the first hand");
             System.out.println("As a reminder, the card is " + cards[0]);
             System.out.println("Would you like to hit or stand? ");
-            String answer = scanner.nextLine();
+            answer = scanner.nextLine();
             answer = answer.toLowerCase();
+            while (answer.equals("hit")) {
+                newCard = cards[cardsDealt];
+                System.out.println("You received a " + newCard);
+                if (Shuffle.cardValue(newCard) == 11) {
+                    playerHand1.aceCheck += 1;
+                }
+                playerHand1.handHit(Shuffle.cardValue(newCard));
+                if (playerHand1.handTotal > 21 && playerHand1.aceCheck > 0) {
+                    playerHand1.handTotal -= 10;
+                    playerHand1.aceCheck -= 1;
+                    System.out.println("Your Ace has been changed from 11 to 1");
+                }
+                cardsDealt += 1;
+                System.out.println("Your Total is " + playerHand1.handTotal);
+                if (playerHand1.handTotal < 21) {
+                    System.out.println("Would you like to hit or stand? ");
+                    answer = scanner.nextLine();
+                    answer = answer.toLowerCase();
+                }
+                if (playerHand1.handTotal == 21) {
+                    System.out.println("Blackjack!");
+                    wager = wager*2;
+                }
+                if (playerHand1.handTotal > 21) {
+                    System.out.println("Player Busts");
+                    wager = 0;
+                }
+            }
+            System.out.println("You are now playing with the second hand");
+            System.out.println("As a reminder, the card is " + cards[2]);
+            System.out.println("Would you like to hit or stand? ");
+            answer = scanner.nextLine();
+            answer = answer.toLowerCase();
+            while (answer.equals("hit")) {
+                newCard = cards[cardsDealt];
+                System.out.println("You received a " + newCard);
+                if (Shuffle.cardValue(newCard) == 11) {
+                    playerHand1.aceCheck += 1;
+                }
+                playerHand2.handHit(Shuffle.cardValue(newCard));
+                if (playerHand2.handTotal > 21 && playerHand2.aceCheck > 0) {
+                    playerHand2.handTotal -= 10;
+                    playerHand2.aceCheck -= 1;
+                    System.out.println("Your Ace has been changed from 11 to 1");
+                }
+                cardsDealt += 1;
+                System.out.println("Your Total is " + playerHand2.handTotal);
+                if (playerHand2.handTotal < 21) {
+                    System.out.println("Would you like to hit or stand? ");
+                    answer = scanner.nextLine();
+                    answer = answer.toLowerCase();
+                }
+                if (playerHand2.handTotal == 21) {
+                    System.out.println("Blackjack!");
+                    splitWager = splitWager*2;
+                }
+                if (playerHand2.handTotal > 21) {
+                    System.out.println("Player Busts");
+                    splitWager = 0;
+                }
+            }
         }
-        System.out.println("The dealers hidden card was "+ cards[3] + ", bringing the dealer's total to " + dealerTotal);
-        while (dealerTotal < 17){
+        System.out.println("The dealers hidden card was "+ cards[3] + ", bringing the dealer's total to " + dealerHand.handTotal);
+        while (dealerHand.handTotal < 17){
             newCard = cards[cardsDealt];
-            dealerTotal = Shuffle.cardValue(newCard) + dealerTotal;
-            System.out.println("Dealer received a " + newCard + ", bringing the dealer's total to "+ dealerTotal);
+            dealerHand.handHit(Shuffle.cardValue(newCard));
+            System.out.println("Dealer received a " + newCard + ", bringing the dealer's total to "+ dealerHand.handTotal);
             if (Shuffle.cardValue(newCard) == 11){
-                aceCheckDealer +=1;
+                dealerHand.aceCheck +=1;
                 }
             cardsDealt += 1;
-            if (dealerTotal > 21 && aceCheckDealer > 0){
-                dealerTotal -= 10;
-                aceCheckPlayer -= 1;
-                System.out.println("The dealer's Ace has been changed from 11 to 1, bringing the dealer's total to " + dealerTotal);
+            if (dealerHand.handTotal > 21 && dealerHand.aceCheck > 0){
+                dealerHand.handTotal -= 10;
+                dealerHand.aceCheck -= 1;
+                System.out.println("The dealer's Ace has been changed from 11 to 1, bringing the dealer's total to " + dealerHand.handTotal);
                 }
 
-            if(dealerTotal == 21){
+            if(dealerHand.handTotal == 21){
                 System.out.println("Dealer Blackjack!");
                 return totalCash;
             }
-            if (dealerTotal > 21){
+            if (dealerHand.handTotal > 21){
                 System.out.println("Dealer Busts");
                 return totalCash + (wager*2);
             }
         }
-        System.out.println("The dealer's total is " + dealerTotal);
-        if (playerTotal > dealerTotal){
-            System.out.println("This is less than your total, congratulations");
-            return totalCash + (wager*2);
-        }
-        if (playerTotal == dealerTotal){
-            System.out.println("Tie game");
-            return totalCash + wager;
-        }
-        System.out.println("This is more than your total, the dealer wins");
-        return totalCash;
-    }
-    public void blackjackHand(int card1, int card2){
-        int value;
-        if (card2 == 0){
-            value = card1;
-        }
-        else{
-            value = card1+card2;
-        }
+        System.out.println("The dealer's total is " + dealerHand.handTotal);
 
+        if(playerHand.exists){
+            if (playerHand.handTotal > dealerHand.handTotal){
+                System.out.println("This is less than your total, congratulations");
+                return totalCash + (wager*2);
+            }
+            if (playerHand.handTotal == dealerHand.handTotal){
+                System.out.println("Both hands are equal");
+                System.out.println("Tie game");
+                return totalCash + wager;
+            }
+            System.out.println("This is more than your total, the dealer wins");
+            return totalCash;
+        }
+        if (playerHand1.exists){
+            System.out.println("For your first hand: ");
+            if (playerHand1.handTotal > dealerHand.handTotal){
+                System.out.println("The dealer had less than you did, congratulations");
+                totalCash = totalCash + (wager*2);
+            }
+            if (playerHand1.handTotal == dealerHand.handTotal){
+                System.out.println("Both hands are equal");
+                System.out.println("Tie game");
+                totalCash = totalCash + wager;
+            }
+            if (playerHand1.handTotal < dealerHand.handTotal) {
+                System.out.println("The dealer had a higher total");
+                System.out.println("Dealer takes this hand");
+            }
+            System.out.println("For your second hand: ");
+            if (playerHand2.handTotal > dealerHand.handTotal){
+                System.out.println("This is less than your second hand's total, congratulations");
+                totalCash = totalCash + (wager*2);
+            }
+            if (playerHand2.handTotal == dealerHand.handTotal){
+                System.out.println("Both hands are equal");
+                System.out.println("Tie game");
+                totalCash = totalCash + wager;
+            }
+            if (playerHand2.handTotal < dealerHand.handTotal) {
+                System.out.println("The dealer had a higher total");
+                System.out.println("Dealer takes this hand");
+            }
+        }
+        return totalCash;
     }
 
 
