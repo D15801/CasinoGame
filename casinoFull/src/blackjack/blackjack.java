@@ -41,7 +41,7 @@ public class blackjack {
 
         int playerCard1 = Shuffle.cardValue(cards[0]);
         int playerCard2 = Shuffle.cardValue(cards[2]);
-        if (playerCard1 == playerCard2){
+        if (cards[0].charAt(0) == cards[2].charAt(0)){
             System.out.println("Would you like to split?");
             System.out.println("Splitting requires doubling the bet");
             String split = scanner.nextLine();
@@ -174,10 +174,12 @@ public class blackjack {
                 if (playerHand1.handTotal == 21) {
                     System.out.println("Blackjack!");
                     wager = wager*2;
+                    answer = "stand";
                 }
                 if (playerHand1.handTotal > 21) {
                     System.out.println("Player Busts");
                     wager = 0;
+                    answer = "stand";
                 }
             }
             System.out.println("You are now playing with the second hand");
@@ -207,10 +209,12 @@ public class blackjack {
                 if (playerHand2.handTotal == 21) {
                     System.out.println("Blackjack!");
                     splitWager = splitWager*2;
+                    answer = "stand";
                 }
                 if (playerHand2.handTotal > 21) {
                     System.out.println("Player Busts");
                     splitWager = 0;
+                    answer = "stand";
                 }
             }
         }
@@ -256,8 +260,14 @@ public class blackjack {
         if (playerHand1.exists){
             System.out.println("For your first hand: ");
             if (playerHand1.handTotal > dealerHand.handTotal){
-                System.out.println("The dealer had less than you did, congratulations");
-                totalCash = totalCash + (wager*2);
+                if(playerHand1.handTotal > 21){
+                    System.out.println("Unfortunately, you busted");
+                }
+                else {
+                    System.out.println("This is less than your first hand's total, congratulations");
+                    totalCash = totalCash + (wager*2);
+                }
+
             }
             if (playerHand1.handTotal == dealerHand.handTotal){
                 System.out.println("Both hands are equal");
@@ -270,13 +280,18 @@ public class blackjack {
             }
             System.out.println("For your second hand: ");
             if (playerHand2.handTotal > dealerHand.handTotal){
-                System.out.println("This is less than your second hand's total, congratulations");
-                totalCash = totalCash + (wager*2);
+                if(playerHand2.handTotal > 21){
+                    System.out.println("Unfortunately, you busted");
+                }
+                else {
+                    System.out.println("This is less than your second hand's total, congratulations");
+                    totalCash = totalCash + (splitWager*2);
+                }
             }
             if (playerHand2.handTotal == dealerHand.handTotal){
                 System.out.println("Both hands are equal");
                 System.out.println("Tie game");
-                totalCash = totalCash + wager;
+                totalCash = totalCash + splitWager;
             }
             if (playerHand2.handTotal < dealerHand.handTotal) {
                 System.out.println("The dealer had a higher total");
